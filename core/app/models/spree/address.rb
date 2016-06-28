@@ -133,6 +133,7 @@ module Spree
       def postal_code_validate
         return if country.blank? || country.iso.blank? || !require_zipcode?
         return if !TwitterCldr::Shared::PostalCodes.territories.include?(country.iso.downcase.to_sym)
+        return if country.try(:iso) == "KR"
 
         postal_code = TwitterCldr::Shared::PostalCodes.for_territory(country.iso)
         errors.add(:zipcode, :invalid) if !postal_code.valid?(zipcode.to_s)
